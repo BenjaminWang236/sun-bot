@@ -2,6 +2,15 @@ import sys
 import sympy
 from sympy import symbols
 
+error_code_table = {
+    0: 'OK',
+    1: 'Starting level must be at least 1',
+    2: 'No upgrade cost',
+    3: 'Target level must be greater than Starting level'
+}
+
+error_msg_to_code = dict((v, k) for k, v in error_code_table.items())
+
 
 def verifyInputPerimeters(starting_level, target_level):
     """
@@ -33,25 +42,6 @@ def partialSum(upTo, sybs, expr):
     expr2 = expr
     expr2 = (upTo / 2) * (expr2.subs(sybs[0], 1) + expr2.subs(sybs[0], upTo))
     return int(float(expr2.evalf()))
-
-
-def partialSumFromAnywhere(start, end, sybs, expr):
-    """
-    n-th partial sum starting from i is equal to:
-    n-th partial sum - (i-1)-th partial sum
-    
-    @parem: start is the 'i'
-            end is the 'n'
-    """
-    # if end >= start:
-    #     return 0
-    target_total_cost = partialSum(end, sybs, expr)
-    starting_total_cost = partialSum(start - 1, sybs, expr)
-    print(
-        f"Total costs: Target {target_total_cost:,} - Start {starting_total_cost:,}"
-    )
-    # return partialSum(end, sybs, expr) - partialSum(start - 1, sybs, expr)
-    return target_total_cost - starting_total_cost
 
 
 def upgrade_cost_total(target_level):
@@ -106,8 +96,7 @@ def upgrade_cost_total(target_level):
         cost += partialSum(target_level, sybs, exprs[2])
         cost -= partialSum(thresholds[1] - 1, sybs, exprs[2])
 
-    print(f'Total cost of {target_level:,} is {cost:,} gold')
-
+    # print(f'Total cost of {target_level:,} is {cost:,} gold')
     return cost
 
 

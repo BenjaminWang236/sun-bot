@@ -2,10 +2,6 @@ function partSum(upTo, multi) {
     return (upTo / 2) * (multi * (upTo + 1));
 }
 
-function partSumAny(start, end, multi) {
-    return partSum(end, multi) - partSum(start - 1, multi);
-}
-
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -37,17 +33,19 @@ function upgradeCostDiff(start, target) {
 }
 
 let start = 1;
-let target = 10000;
+let target = 5;
 
 if (start < 1 || target <= start) {
     console.log("Invalid Perimeters!");
-    return;
+    // return;
 }
-
-cost = upgradeCostDiff(start, target);
-cost = numberWithCommas(cost);
-console.log(
-    "Upgrade cost (" + start + " -> " + target + "): " + cost + " gold"
-);
-// write(cost);
-// $("#header").html(cost);
+else {
+    cost = upgradeCostDiff(start, target);
+    cost = numberWithCommas(cost);
+    console.log(
+        "Upgrade cost (" + start + " -> " + target + "): " + cost + " gold"
+    );
+    // write(cost);
+    // $("#header").html(cost);
+}
+    

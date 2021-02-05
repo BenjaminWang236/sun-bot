@@ -10,22 +10,14 @@ from helper_functions.keep_alive import *
 
 # Loads the .env file that resides on the same level as the script.
 load_dotenv()
-user_prefix = "&"
+original_prefix = '&'
+user_prefix = original_prefix
 
 intents = discord.Intents.default()
 # intents.members = True  # Subscribe to the privileged members intent.
 # client = discord.Client()
 # bot = commands.Bot(command_prefix="&")
 bot = commands.Bot(command_prefix=user_prefix, intents=intents)
-
-error_code_table = {
-    0: 'OK',
-    1: 'Starting level must be at least 1',
-    2: 'No upgrade cost',
-    3: 'Target level must be greater than Starting level'
-}
-
-error_msg_to_code = dict((v, k) for k, v in error_code_table.items())
 
 
 @bot.event
@@ -42,6 +34,18 @@ async def on_ready():
     print(f"Sun-bot is in {guild_count} guilds.")
 
 
+@bot.command(
+    name='prefix',
+    help=
+    'See command-prefix. Use "prefix set" to set new command-prefix or "prefix reset" to resset command-prefix to "&"'
+)
+async def prefix_checker(ctx, prefix: str = '&'):
+    """
+    Returns the current command-prefix
+    """
+    return bot.get_prefix(ctx.message)
+
+    
 @bot.command(
     name="upcost",
     help=
