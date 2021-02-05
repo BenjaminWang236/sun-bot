@@ -14,14 +14,16 @@ def verifyInputPerimeters(starting_level, target_level):
     # return starting_level > 0 and target_level > starting_level
     if starting_level < 1:
         print(f"Current level {starting_level} must be at least 1")
-        return False
+        return 1
     if target_level == starting_level:
         print("No Upgrade Cost: 0")
-        return False
+        return 2
     if target_level < starting_level:
-        print(f"Target level ({target_level}) not > current level ({starting_level})")
-        return False
-    return True
+        print(
+            f"Target level ({target_level}) not > current level ({starting_level})"
+        )
+        return 3
+    return 0
 
 
 def partialSum(upTo, sybs, expr):
@@ -41,10 +43,18 @@ def partialSumFromAnywhere(start, end, sybs, expr):
     @parem: start is the 'i'
             end is the 'n'
     """
-    return partialSum(end, sybs, expr) - partialSum(start - 1, sybs, expr)
+    # if end >= start:
+    #     return 0
+    target_total_cost = partialSum(end, sybs, expr)
+    starting_total_cost = partialSum(start - 1, sybs, expr)
+    print(
+        f"Total costs: Target {target_total_cost:,} - Start {starting_total_cost:,}"
+    )
+    # return partialSum(end, sybs, expr) - partialSum(start - 1, sybs, expr)
+    return target_total_cost - starting_total_cost
 
 
-def upgrade_cost_calc(starting_level, target_level):
+def upgrade_cost_total(target_level):
     """
     This problem is basically a "n-th Partial Sum" problem
     with three separate arithmetic series equations separated
@@ -77,34 +87,36 @@ def upgrade_cost_calc(starting_level, target_level):
     a_n is the expression 'cx' evaluated at x = n
     """
 
-    # starting_level = int(float(input("Current Level:\n")))
-    # target_level = int(float(input("Target Level:\n")))
-    if not verifyInputPerimeters(starting_level, target_level):
-        print("Error: Invalid Perimeters, Try Again!")
-        sys.exit()
-
     n = symbols("n")
     sybs = [n]
     exprs = [3000 * n, 4000 * n, 5000 * n]
     thresholds = [5000, 10000]
 
-    cost = partialSumFromAnywhere(
-        starting_level if starting_level < thresholds[0] else thresholds[0],
-        target_level if target_level < thresholds[0] else thresholds[0] - 1,
-        sybs,
-        exprs[0],
-    )
-    if target_level >= thresholds[0]:
-        cost += partialSumFromAnywhere(
-            thresholds[0] if starting_level < thresholds[1] else thresholds[1],
-            target_level if target_level < thresholds[1] else thresholds[1] - 1,
-            sybs,
-            exprs[1],
-        )
-    if target_level >= thresholds[1]:
-        cost += partialSumFromAnywhere(thresholds[1], target_level, sybs, exprs[2])
+    cost = 0
+    if target_level < thresholds[0]:
+        cost += partialSum(target_level, sybs, exprs[0])
+    elif target_level < thresholds[1]:
+        cost += partialSum(thresholds[0] - 1, sybs, exprs[0])
+        cost += partialSum(target_level, sybs, exprs[1])
+        cost -= partialSum(thresholds[0] - 1, sybs, exprs[1])
+    else:
+        cost += partialSum(thresholds[0] - 1, sybs, exprs[0])
+        cost += partialSum(thresholds[1] - 1, sybs, exprs[1])
+        cost -= partialSum(thresholds[0] - 1, sybs, exprs[1])
+        cost += partialSum(target_level, sybs, exprs[2])
+        cost -= partialSum(thresholds[1] - 1, sybs, exprs[2])
+
+    print(f'Total cost of {target_level:,} is {cost:,} gold')
 
     return cost
+
+
+def upgrade_cost_diff(starting_level, target_level):
+    """
+    Difference between total costs of starting-level and target-level
+    """
+    return upgrade_cost_total(target_level) - upgrade_cost_total(
+        starting_level)
 
 
 def main():
@@ -116,7 +128,7 @@ def main():
 
     starting_level = int(float(input("Current Level:\n")))
     target_level = int(float(input("Target Level:\n")))
-    cost = upgrade_cost_calc(starting_level, target_level)
+    cost = upgrade_cost_diff(starting_level, target_level)
     print(f"Upgrade Cost ({starting_level} -> {target_level}): {cost:,} gold")
 
 
