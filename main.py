@@ -34,8 +34,7 @@ async def on_ready():
 
 @bot.command(
     name="upcost",
-    help=
-    "Calculate the Upgrade cost in gold from current level to target level",
+    help="Calculate the Upgrade cost in gold from current level to target level",
 )
 # @commands.has_role("Admin")
 async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
@@ -43,10 +42,7 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     Calculate the upgrade cost in gold to upgrade the hero/leader/tower from the
     current level to the desired target level
     """
-    cost = upgrade_cost_calc(current_level, target_level)
-    # await ctx.send(
-    #     f"Upgrading lvl {current_level:,} to {target_level:,} costs {cost:,} gold")
-    await ctx.send(f"{cost:,} gold")
+    await ctx.send(f"{upgrade_cost_calc(current_level, target_level):,} gold")
 
 
 @bot.event
