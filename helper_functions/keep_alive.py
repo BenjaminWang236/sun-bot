@@ -3,8 +3,6 @@ from threading import Thread
 
 app = Flask("")
 
-# Testing syncing to Repl.It
-
 
 @app.route("/")
 def home():
