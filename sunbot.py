@@ -44,8 +44,9 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     current level to the desired target level
     """
     cost = upgrade_cost_calc(current_level, target_level)
-    await ctx.send(
-        f"Upgrade {current_level:,} -> {target_level:,} costs {cost:,} gold")
+    # await ctx.send(
+    #     f"Upgrading lvl {current_level:,} to {target_level:,} costs {cost:,} gold")
+    await ctx.send(f"{cost:,} gold")
 
 
 @bot.event
