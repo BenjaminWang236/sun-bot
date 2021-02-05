@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from helper_functions.upgrade_cost import *
+from helper_functions.keep_alive import *
 
 # Loads the .env file that resides on the same level as the script.
 load_dotenv()
@@ -33,7 +34,8 @@ async def on_ready():
 
 @bot.command(
     name="upcost",
-    help="Calculate the Upgrade cost in gold from current level to target level",
+    help=
+    "Calculate the Upgrade cost in gold from current level to target level",
 )
 # @commands.has_role("Admin")
 async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
@@ -42,7 +44,8 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     current level to the desired target level
     """
     cost = upgrade_cost_calc(current_level, target_level)
-    await ctx.send(f"Upgrade {current_level} -> {target_level} costs {cost:,} gold")
+    await ctx.send(
+        f"Upgrade {current_level:,} -> {target_level:,} costs {cost:,} gold")
 
 
 @bot.event
@@ -64,6 +67,7 @@ async def on_command_error(ctx, error):
 
 
 def main():
+    keep_alive()
     # EXECUTES THE bot WITH THE SPECIFIED TOKEN. TOKEN HAS BEEN REMOVED AND USED JUST AS AN EXAMPLE.
     bot.run(os.getenv("DISCORD_TOKEN"))
 
