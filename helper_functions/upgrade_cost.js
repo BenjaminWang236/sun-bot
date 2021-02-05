@@ -10,6 +10,30 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function upgradeCostTotal(target) {
+    let mul = [3000, 4000, 5000];
+    let thresh = [5000, 10000];
+
+    let cost = 0
+    if target < thresh[0]:
+        cost += partSum(target, mul[0])
+    else if target < thresh[1]:
+        cost += partSum(thresh[0]-1,mul[0])
+        cost += partSum(target, mul[1])
+        cost -= partSum(thresh[0]-1, mul[1])
+    else:
+        cost += partSum(thresh[0]-1, mul[0])
+        cost += partSum(thresh[1]-1, mul[1])
+        cost -= partSum(thresh[0]-1, mul[1])
+        cost += partSum(target, mul[2])
+        cost -= partSum(thresh[1]-1, mul[2])
+    return cost
+}
+
+function upgradeCostDiff(start, target) {
+    return upgradeCostTotal(target) - upgradeCostTotal(start)
+}
+
 // var start = prompt("Current Level");
 // if (start != null) {
 //     console.log(start);
@@ -27,27 +51,7 @@ if (start < 1 || target <= start) {
     console.log("Invalid Perimeters!");
     return;
 }
-
-let mul = [3000, 4000, 5000];
-let thresh = [5000, 10000];
-let cost = partSumAny(
-    start < thresh[0] ? start : thresh[0],
-    target < thresh[0] ? target : thresh[0] - 1,
-    mul[0]
-);
-// console.log("cost up to 4999: " + numberWithCommas(cost));
-if (target >= thresh[0]) {
-    cost += partSumAny(
-        start < thresh[1] ? thresh[0] : thresh[1],
-        target < thresh[1] ? target : thresh[1] - 1,
-        mul[1]
-    );
-}
-// console.log("cost up to 9999: " + numberWithCommas(cost));
-if (target >= thresh[1]) {
-    cost += partSumAny(thresh[1], target, mul[2]);
-}
-
+cost = upgradeCostDiff(start, target)
 cost = numberWithCommas(cost);
 console.log(
     "Upgrade cost (" + start + " -> " + target + "): " + cost + " gold"
