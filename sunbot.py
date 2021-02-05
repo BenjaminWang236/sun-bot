@@ -1,5 +1,5 @@
 # IMPORT DISCORD.PY. ALLOWS ACCESS TO DISCORD'S API.
-# import discord
+import discord
 import os
 
 # Import load_dotenv function from dotenv module.
@@ -10,8 +10,11 @@ from helper_functions.upgrade_cost import *
 # Loads the .env file that resides on the same level as the script.
 load_dotenv()
 
+intents = discord.Intents.default()
+# intents.members = True  # Subscribe to the privileged members intent.
 # client = discord.Client()
-bot = commands.Bot(command_prefix="&")
+# bot = commands.Bot(command_prefix="&")
+bot = commands.Bot(command_prefix="&", intents=intents)
 
 
 @bot.event
