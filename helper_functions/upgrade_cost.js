@@ -24,6 +24,7 @@ function upgradeCostTotal(target) {
         cost += partSum(target, mul[2]);
         cost -= partSum(thresh[1] - 1, mul[2]);
     }
+    console.log("Total cost of " + target+ " is " + cost)
 
     return cost;
 }
@@ -32,8 +33,8 @@ function upgradeCostDiff(start, target) {
     return upgradeCostTotal(target) - upgradeCostTotal(start);
 }
 
-let start = 1;
-let target = 5;
+let start = 31;
+let target = 32;
 
 if (start < 1 || target <= start) {
     console.log("Invalid Perimeters!");

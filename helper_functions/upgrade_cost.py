@@ -108,6 +108,21 @@ def upgrade_cost_diff(starting_level, target_level):
         starting_level)
 
 
+def upgrade_castle_total(target_level):
+    return 1250 * target_level * target_level
+
+
+def upgrade_castle_diff(starting_level, target_level):
+    return upgrade_castle_total(target_level) - upgrade_castle_total(
+        starting_level)
+
+def upgrade_TA_total(target_level):
+    return 500 * target_level * target_level
+
+def upgrade_TA_diff(starting_level, target_level):
+    return upgrade_TA_total(target_level) - upgrade_TA_total(starting_level)
+
+
 def main():
     """
     Grow Castle Heros/Leaders/Towers Upgrade Cost (Gold) calculator

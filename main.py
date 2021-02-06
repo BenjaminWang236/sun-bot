@@ -10,14 +10,9 @@ from helper_functions.keep_alive import *
 
 # Loads the .env file that resides on the same level as the script.
 load_dotenv()
-original_prefix = '&'
-user_prefix = original_prefix
-
+default_prefixes = ['']
 intents = discord.Intents.default()
-# intents.members = True  # Subscribe to the privileged members intent.
-# client = discord.Client()
-# bot = commands.Bot(command_prefix="&")
-bot = commands.Bot(command_prefix=user_prefix, intents=intents)
+bot = commands.Bot(command_prefix=default_prefixes, intents=intents)
 
 
 @bot.event
@@ -34,54 +29,50 @@ async def on_ready():
     print(f"Sun-bot is in {guild_count} guilds.")
 
 
-@bot.command(
-    name='prefix',
-    help=
-    'See command-prefix. Use "prefix set" to set new command-prefix or "prefix reset" to resset command-prefix to "&"'
-)
-async def prefix_checker(ctx, prefix: str = '&'):
-    """
-    Returns the current command-prefix
-    """
-    return bot.get_prefix(ctx.message)
+Up_description = f'up cost [start lvl] [target lvl]\nup total [target lvl]'
 
-    
-@bot.command(
-    name="upcost",
+
+@bot.group(name='up', help=Up_description, pass_context=True)
+async def upgrade(ctx):
+    if ctx.invoked_subcommand is None:
+        await ctx.send(f'```{Up_description}```')
+
+
+@upgrade.command(
+    name='cost',
     help=
-    "Calculate the Upgrade cost in gold from current level to target level",
-)
-# @commands.has_role("Admin")
+    '[start lvl] [target lvl] | Get the cost in gold needed to upgrade from the starting-level to target-level',
+    pass_context=True)
 async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
-    """
-    Calculate the upgrade cost in gold to upgrade the hero/leader/tower from the
-    current level to the desired target level
-    """
     perimeter_status = verifyInputPerimeters(current_level, target_level)
     if error_code_table[perimeter_status] != 'OK':
         print(f"Error: {error_code_table[perimeter_status]}")
         await ctx.send(f"{error_code_table[perimeter_status]}")
     else:
-        cost = upgrade_cost_diff(current_level, target_level)
-        await ctx.send(f"{cost:,} gold")
+        await ctx.send(
+            f"Hero | Leader | Tower:\t{upgrade_cost_diff(current_level, target_level):,}\tgold\n"
+            +
+            f"Castle:\t\t\t\t\t\t\t\t{upgrade_castle_diff(current_level, target_level):,}\tgold\n"
+            +
+            f"Tower-Archer (TA):\t\t{upgrade_TA_diff(current_level, target_level):,}\tgold"
+        )
+
+
+@upgrade.command(
+    name='total',
+    help='[target lvl] | Get the cost in gold to get from level 1 to target-level')
+async def total_cost(ctx, target_level: int = 10000):
+    await ctx.send(
+        f"Hero | Leader | Tower:\t{upgrade_cost_total( target_level):,}\tgold\n"
+        +
+        f"Castle:\t\t\t\t\t\t\t\t{upgrade_castle_total( target_level):,}\tgold\n"
+        + f"Tower-Archer (TA):\t\t{upgrade_TA_total( target_level):,}\tgold")
 
 
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CheckFailure):
         await ctx.send("You do not have the correct role for this command.")
-
-
-# @bot.event
-# async def on_error(event, *args, **kwargs):
-#     """
-#     EVENT LISTENER FOR DISCORD API'S "discord.DiscordException"
-#     """
-#     with open(os.getenv("ERROR_FILE"), "a+") as f:
-#         if event == "on_message":
-#             f.write(f"Unhandled message: {args[0]}\n")
-#         else:
-#             raise Exception("Uncleared Error(s)")
 
 
 def main():
