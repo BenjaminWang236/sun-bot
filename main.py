@@ -60,13 +60,48 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
 
 @upgrade.command(
     name='total',
-    help='[target lvl] | Get the cost in gold to get from level 1 to target-level')
+    help=
+    '[target lvl] | Get the cost in gold to get from level 1 to target-level')
 async def total_cost(ctx, target_level: int = 10000):
     await ctx.send(
         f"Hero | Leader | Tower:\t{upgrade_cost_total( target_level):,}\tgold\n"
         +
         f"Castle:\t\t\t\t\t\t\t\t{upgrade_castle_total( target_level):,}\tgold\n"
         + f"Tower-Archer (TA):\t\t{upgrade_TA_total( target_level):,}\tgold")
+
+
+@bot.command(name='embed', help='testing Embedding')
+async def embed(ctx):
+    embed = discord.Embed(title="Your title here",
+                          description="Your desc here",
+                          url='https://repl.it/@Suntoria/sun-bot#main.py',
+                          color=0xFF5733)  #,color=Hex code
+    # embed.set_author(
+    #     name='Suntoria',
+    #     url='https://repl.it/@Suntoria',
+    #     icon_url=
+    #     'https://static.wikia.nocookie.net/thegigaverse/images/6/66/Dark_soulz.jpg/revision/latest/scale-to-width-down/884?cb=20190719081349'
+    # )
+    embed.set_author(name=ctx.author.display_name,
+                     url='https://www.google.com',
+                     icon_url=ctx.author.avatar_url)
+    embed.set_thumbnail(
+        url=
+        'https://static.wikia.nocookie.net/grow-castle/images/1/1f/Gold_Coin.png/revision/latest?cb=20180508232731'
+    )
+    embed.add_field(name='Hero | Leader | Tower',
+                    value=f'{0}\tgold',
+                    inline=False)
+    embed.add_field(name='Castle',
+                    value=f'{0}\tgold',
+                    inline=False)
+    embed.add_field(name='Tower-Archer',
+                    value=f'{0}\tgold',
+                    inline=False)
+    # embed.add_field(name="Name",
+    #                 value="you can make as much as fields you like to")
+    # embed.set_footer(name="footer")  #if you like to
+    await ctx.send(embed=embed)
 
 
 @bot.event
