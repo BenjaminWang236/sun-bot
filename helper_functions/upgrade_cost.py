@@ -1,5 +1,6 @@
 import sys
 import sympy
+import math
 from sympy import symbols
 
 error_code_table = {
@@ -116,11 +117,24 @@ def upgrade_castle_diff(starting_level, target_level):
     return upgrade_castle_total(target_level) - upgrade_castle_total(
         starting_level)
 
+
 def upgrade_TA_total(target_level):
     return 500 * target_level * target_level
 
+
 def upgrade_TA_diff(starting_level, target_level):
     return upgrade_TA_total(target_level) - upgrade_TA_total(starting_level)
+
+
+def upgrade_base_total(target_level):
+    step = 5000
+    idx = math.floor(target_level / step)
+    return step * sum(range(idx + 1)) + (target_level - (idx * step)) * (idx + 1)
+
+
+def upgrade_base_diff(starting_level, target_level):
+    return upgrade_base_total(target_level) - upgrade_base_total(
+        starting_level)
 
 
 def main():

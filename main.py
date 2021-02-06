@@ -28,7 +28,7 @@ coin_url='https://discord.com/assets/11b9d8164d204c7fd48a88a515745c1d.svg'  # :c
 """
 
 
-def custom_embed(ctx, title, description, hero, castle, ta):
+def custom_embed(ctx, title, description, hero, castle, ta, base):
     embed = discord.Embed(title=title,
                           description=description,
                           url='https://repl.it/@Suntoria/sun-bot#main.py',
@@ -51,8 +51,15 @@ def custom_embed(ctx, title, description, hero, castle, ta):
     embed.add_field(name=f'{bot.get_emoji(807446499516612688)} Tower-Archer',
                     value=f':coin:\t_{ta:,}\tgold_',
                     inline=False)
+    embed.add_field(
+        name=f'Castle Piece/Base',
+        value=f'_{bot.get_emoji(784252518590578718)}\t{base:,}\t crystals_',
+        inline=False)
+    embed.set_image(url='https://i.giphy.com/media/13yNFN1TlNCjC0/200.gif')
     embed.set_footer(
-        text='by Suntoria#4680',
+        text=
+        f'All types costs an extra 100 crystals at prestige (level {10000:,})\n'
+        + 'by Suntoria#4680',
         icon_url=
         'https://static.wikia.nocookie.net/thegigaverse/images/6/66/Dark_soulz.jpg/revision/latest?cb=20190719081349'
     )
@@ -98,7 +105,8 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
             f"Value difference between level {current_level:,} and level {target_level:,}",
             upgrade_cost_diff(current_level, target_level),
             upgrade_castle_diff(current_level, target_level),
-            upgrade_TA_diff(current_level, target_level))
+            upgrade_TA_diff(current_level, target_level),
+            upgrade_base_diff(current_level, target_level))
         await ctx.send(embed=embed)
 
 
@@ -111,7 +119,8 @@ async def total_cost(ctx, target_level: int = 10000):
                          f"Total value at level {target_level:,}",
                          upgrade_cost_total(target_level),
                          upgrade_castle_total(target_level),
-                         upgrade_TA_total(target_level))
+                         upgrade_TA_total(target_level),
+                         upgrade_base_total(target_level))
     await ctx.send(embed=embed)
 
 
