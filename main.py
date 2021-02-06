@@ -1,10 +1,12 @@
 # IMPORT DISCORD.PY. ALLOWS ACCESS TO DISCORD'S API.
 import discord
 import os
+import time
 
 # Import load_dotenv function from dotenv module.
 from dotenv import load_dotenv
 from discord.ext import commands
+from datetime import date, datetime
 from helper_functions.upgrade_cost import *
 from helper_functions.keep_alive import *
 
@@ -13,6 +15,48 @@ load_dotenv()
 default_prefixes = ['']
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix=default_prefixes, intents=intents)
+"""
+liz_url = 'https://cdn.discordapp.com/emojis/807427398533775362.png?v=1'  # :wElizabeth:
+din_url = 'https://cdn.discordapp.com/emojis/807443877886951436.png?v=1'  # :wDin:
+ice_url = 'https://cdn.discordapp.com/emojis/807441258439507978.png?v=1'  # :zIceTower:
+ta_url = 'https://cdn.discordapp.com/emojis/807446499516612688.png?v=1'  # :wArcher:
+castle_url = 'https://cdn.discordapp.com/emojis/807448829732585532.png?v=1'  # :zCastle:
+crystal_url='https://cdn.discordapp.com/emojis/784252518590578718.png?v=1'  # :zCrystal:
+coins_url='https://cdn.discordapp.com/emojis/455521544068661248.png?v=1'    # :Coins:
+coin_url='https://discord.com/assets/11b9d8164d204c7fd48a88a515745c1d.svg'  # :coin:
+# :coin: is a Discord default Emoji, just use the literal ':coin:' in string
+"""
+
+
+def custom_embed(ctx, title, description, hero, castle, ta):
+    embed = discord.Embed(title=title,
+                          description=description,
+                          url='https://repl.it/@Suntoria/sun-bot#main.py',
+                          color=0xFF5733,
+                          timestamp=datetime.now())  #,color=Hex code
+    embed.set_author(
+        name=ctx.author.display_name,
+        url='https://www.youtube.com/channel/UCFod3BWeZwhg2W1kBi15-pA/featured',
+        icon_url=ctx.author.avatar_url)
+    embed.set_thumbnail(
+        url='https://media3.giphy.com/media/2ZYKKfCr0rkvvTkdum/source.gif')
+    embed.add_field(name=f'{bot.get_emoji(807427398533775362)} Hero | ' +
+                    f' {bot.get_emoji(807443877886951436)} Leader | ' +
+                    f'{bot.get_emoji(807441258439507978)} Tower',
+                    value=f':coin:\t_{hero:,}\tgold_',
+                    inline=False)
+    embed.add_field(name=f'{bot.get_emoji(807448829732585532)} Castle',
+                    value=f':coin:\t_{castle:,}\tgold_',
+                    inline=False)
+    embed.add_field(name=f'{bot.get_emoji(807446499516612688)} Tower-Archer',
+                    value=f':coin:\t_{ta:,}\tgold_',
+                    inline=False)
+    embed.set_footer(
+        text='by Suntoria#4680',
+        icon_url=
+        'https://static.wikia.nocookie.net/thegigaverse/images/6/66/Dark_soulz.jpg/revision/latest?cb=20190719081349'
+    )
+    return embed
 
 
 @bot.event
@@ -49,34 +93,12 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
         print(f"Error: {error_code_table[perimeter_status]}")
         await ctx.send(f"{error_code_table[perimeter_status]}")
     else:
-        embed = discord.Embed(
-            title="Upgrade Cost",
-            description=
-            f"Value difference in gold from level {current_level:,} to level {target_level:,}",
-            url='https://repl.it/@Suntoria/sun-bot#main.py',
-            color=0xFF5733)  #,color=Hex code
-        embed.set_author(
-            name=ctx.author.display_name,
-            url=
-            'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO',
-            icon_url=ctx.author.avatar_url)
-        embed.set_thumbnail(
-            url=
-            'https://static.wikia.nocookie.net/grow-castle/images/1/1f/Gold_Coin.png/revision/latest?cb=20180508232731'
-        )
-        embed.add_field(
-            name='Hero | Leader | Tower',
-            value=f'{upgrade_cost_diff(current_level, target_level):,}\tgold',
-            inline=False)
-        embed.add_field(
-            name='Castle',
-            value=f'{upgrade_castle_diff(current_level, target_level):,}\tgold',
-            inline=False)
-        embed.add_field(
-            name='Tower-Archer',
-            value=f'{upgrade_TA_diff(current_level, target_level):,}\tgold',
-            inline=False)
-
+        embed = custom_embed(
+            ctx, '__GC Upgrade Cost__',
+            f"Value difference between level {current_level:,} and level {target_level:,}",
+            upgrade_cost_diff(current_level, target_level),
+            upgrade_castle_diff(current_level, target_level),
+            upgrade_TA_diff(current_level, target_level))
         await ctx.send(embed=embed)
 
 
@@ -85,30 +107,11 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     help=
     '[target lvl] | Get the cost in gold to get from level 1 to target-level')
 async def total_cost(ctx, target_level: int = 10000):
-    embed = discord.Embed(
-        title="Total Value",
-        description=f"Total value in gold at level {target_level:,}",
-        url='https://repl.it/@Suntoria/sun-bot#main.py',
-        color=0xFF5733)  #,color=Hex code
-    embed.set_author(
-        name=ctx.author.display_name,
-        url=
-        'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO',
-        icon_url=ctx.author.avatar_url)
-    embed.set_thumbnail(
-        url=
-        'https://static.wikia.nocookie.net/grow-castle/images/1/1f/Gold_Coin.png/revision/latest?cb=20180508232731'
-    )
-    embed.add_field(name='Hero | Leader | Tower',
-                    value=f'{upgrade_cost_total( target_level):,}\tgold',
-                    inline=False)
-    embed.add_field(name='Castle',
-                    value=f'{upgrade_castle_total( target_level):,}\tgold',
-                    inline=False)
-    embed.add_field(name='Tower-Archer',
-                    value=f'{upgrade_TA_total( target_level):,}\tgold',
-                    inline=False)
-
+    embed = custom_embed(ctx, '__GC Total Value__',
+                         f"Total value at level {target_level:,}",
+                         upgrade_cost_total(target_level),
+                         upgrade_castle_total(target_level),
+                         upgrade_TA_total(target_level))
     await ctx.send(embed=embed)
 
 
