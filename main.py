@@ -53,7 +53,7 @@ def custom_embed(ctx, title, description, hero, castle, ta, base):
                     value=f':coin:\t_{ta:,}\tgold_',
                     inline=False)
     embed.add_field(
-        name=f'Castle Piece/Base',
+        name=f'{bot.get_emoji(807782825524330557)} Castle Piece/Base',
         value=f'_{bot.get_emoji(784252518590578718)}\t{base:,}\t crystals_',
         inline=False)
     # embed.set_image(url='https://i.giphy.com/media/13yNFN1TlNCjC0/200.gif')
