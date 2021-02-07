@@ -38,6 +38,14 @@ def verifyInputPerimeters(starting_level, target_level):
 
 def partSum(upTo, sybs, expr):
     """
+    n-th Partial Sum has a neat formula:
+    ∑cx from x = 1 up to x = n
+    = ∑a from x = 1 up to x = n
+    = (n / 2) * (a_1 + a_n), where
+    a is the expression, 'cx' in this case
+    a_1 is the expression 'cx' evaluated at x = 1
+    a_n is the expression 'cx' evaluated at x = n
+
     n-th Partial Sum is equal to (n / 2) * (expr @ 1 + expr @ n)
     """
     expr2 = expr
@@ -46,9 +54,6 @@ def partSum(upTo, sybs, expr):
 
 
 def partSumAny(downTo, upTo, sybs, expr):
-    # return (
-    #     partSum(upTo, sybs, expr) -
-    #     partSum(downTo - 1, sybs, expr)) if upTo != 0 and upTo > downTo else 0
     return partSum(upTo, sybs, expr) - partSum(downTo - 1, sybs, expr)
 
 
@@ -75,14 +80,6 @@ def upgrade_cost_total(target_level):
     This can be reduced down to the difference of two "n-th Partial Sum"s:
     n-th Partial Sum - (i-1)-th Partial Sum
     = (∑cx from x = 1 up to x = n) - (∑cx from x = 1 up to x = i - 1)
-    
-    Lastly, the "n-th Partial Sum" has a neat formula:
-    ∑cx from x = 1 up to x = n
-    = ∑a from x = 1 up to x = n
-    = (n / 2) * (a_1 + a_n), where
-    a is the expression, 'cx' in this case
-    a_1 is the expression 'cx' evaluated at x = 1
-    a_n is the expression 'cx' evaluated at x = n
     """
 
     n = symbols("n")
@@ -91,18 +88,6 @@ def upgrade_cost_total(target_level):
     thresholds = [5000, 10000]
 
     cost = 0
-
-    # cost += partSum(
-    #     target_level if target_level < thresholds[0] else thresholds[0] - 1,
-    #     sybs, exprs[0])
-    # cost += partSumAny(
-    #     thresholds[0], target_level if target_level < thresholds[1] else
-    #     0 if target_level < thresholds[0] else thresholds[1] - 1, sybs,
-    #     exprs[1])
-    # cost += partSumAny(thresholds[1],
-    #                    target_level if target_level >= thresholds[1] else 0,
-    #                    sybs, exprs[2])
-
     if target_level < thresholds[0]:
         cost += partSum(target_level, sybs, exprs[0])
     elif target_level < thresholds[1]:
