@@ -36,13 +36,20 @@ def verifyInputPerimeters(starting_level, target_level):
     return 0
 
 
-def partialSum(upTo, sybs, expr):
+def partSum(upTo, sybs, expr):
     """
     n-th Partial Sum is equal to (n / 2) * (expr @ 1 + expr @ n)
     """
     expr2 = expr
     expr2 = (upTo / 2) * (expr2.subs(sybs[0], 1) + expr2.subs(sybs[0], upTo))
     return int(float(expr2.evalf()))
+
+
+def partSumAny(downTo, upTo, sybs, expr):
+    # return (
+    #     partSum(upTo, sybs, expr) -
+    #     partSum(downTo - 1, sybs, expr)) if upTo != 0 and upTo > downTo else 0
+    return partSum(upTo, sybs, expr) - partSum(downTo - 1, sybs, expr)
 
 
 def upgrade_cost_total(target_level):
@@ -84,20 +91,28 @@ def upgrade_cost_total(target_level):
     thresholds = [5000, 10000]
 
     cost = 0
-    if target_level < thresholds[0]:
-        cost += partialSum(target_level, sybs, exprs[0])
-    elif target_level < thresholds[1]:
-        cost += partialSum(thresholds[0] - 1, sybs, exprs[0])
-        cost += partialSum(target_level, sybs, exprs[1])
-        cost -= partialSum(thresholds[0] - 1, sybs, exprs[1])
-    else:
-        cost += partialSum(thresholds[0] - 1, sybs, exprs[0])
-        cost += partialSum(thresholds[1] - 1, sybs, exprs[1])
-        cost -= partialSum(thresholds[0] - 1, sybs, exprs[1])
-        cost += partialSum(target_level, sybs, exprs[2])
-        cost -= partialSum(thresholds[1] - 1, sybs, exprs[2])
 
-    # print(f'Total cost of {target_level:,} is {cost:,} gold')
+    # cost += partSum(
+    #     target_level if target_level < thresholds[0] else thresholds[0] - 1,
+    #     sybs, exprs[0])
+    # cost += partSumAny(
+    #     thresholds[0], target_level if target_level < thresholds[1] else
+    #     0 if target_level < thresholds[0] else thresholds[1] - 1, sybs,
+    #     exprs[1])
+    # cost += partSumAny(thresholds[1],
+    #                    target_level if target_level >= thresholds[1] else 0,
+    #                    sybs, exprs[2])
+
+    if target_level < thresholds[0]:
+        cost += partSum(target_level, sybs, exprs[0])
+    elif target_level < thresholds[1]:
+        cost += partSum(thresholds[0] - 1, sybs, exprs[0])
+        cost += partSumAny(thresholds[0], target_level, sybs, exprs[1])
+    else:
+        cost += partSum(thresholds[0] - 1, sybs, exprs[0])
+        cost += partSumAny(thresholds[0], thresholds[1] - 1, sybs, exprs[1])
+        cost += partSumAny(thresholds[1], target_level, sybs, exprs[2])
+
     return cost
 
 
@@ -129,7 +144,8 @@ def upgrade_TA_diff(starting_level, target_level):
 def upgrade_base_total(target_level):
     step = 5000
     idx = math.floor(target_level / step)
-    return step * sum(range(idx + 1)) + (target_level - (idx * step)) * (idx + 1)
+    return step * sum(range(idx + 1)) + (target_level -
+                                         (idx * step)) * (idx + 1)
 
 
 def upgrade_base_diff(starting_level, target_level):

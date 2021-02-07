@@ -29,11 +29,12 @@ coin_url='https://discord.com/assets/11b9d8164d204c7fd48a88a515745c1d.svg'  # :c
 
 
 def custom_embed(ctx, title, description, hero, castle, ta, base):
-    embed = discord.Embed(title=title,
-                          description=description,
-                          url='https://repl.it/@Suntoria/sun-bot#main.py',
-                          color=0xFF5733,
-                          timestamp=datetime.now())  #,color=Hex code
+    embed = discord.Embed(
+        title=title,
+        description=description,
+        url='https://repl.it/@Suntoria/sun-bot#main.py',
+        color=0xFF5733,  #,color=Hex code
+        timestamp=datetime.now())
     embed.set_author(
         name=ctx.author.display_name,
         url='https://www.youtube.com/channel/UCFod3BWeZwhg2W1kBi15-pA/featured',
@@ -55,7 +56,7 @@ def custom_embed(ctx, title, description, hero, castle, ta, base):
         name=f'Castle Piece/Base',
         value=f'_{bot.get_emoji(784252518590578718)}\t{base:,}\t crystals_',
         inline=False)
-    embed.set_image(url='https://i.giphy.com/media/13yNFN1TlNCjC0/200.gif')
+    # embed.set_image(url='https://i.giphy.com/media/13yNFN1TlNCjC0/200.gif')
     embed.set_footer(
         text=
         f'All types costs an extra 100 crystals at prestige (level {10000:,})\n'
