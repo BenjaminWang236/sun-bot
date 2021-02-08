@@ -33,8 +33,8 @@ function upgradeCostDiff(start, target) {
     return upgradeCostTotal(target) - upgradeCostTotal(start);
 }
 
-let start = 31;
-let target = 32;
+let start = Number(31) - 1;
+let target = Number(32) - 1;
 
 if (start < 1 || target <= start) {
     console.log("Invalid Perimeters!");
@@ -44,7 +44,7 @@ else {
     cost = upgradeCostDiff(start, target);
     cost = numberWithCommas(cost);
     console.log(
-        "Upgrade cost (" + start + " -> " + target + "): " + cost + " gold"
+        "Upgrade cost (" + (start + 1) + " -> " + (target + 1) + "): " + cost + " gold"
     );
     // write(cost);
     // $("#header").html(cost);
