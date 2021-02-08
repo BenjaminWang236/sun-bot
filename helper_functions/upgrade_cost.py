@@ -22,11 +22,11 @@ def verifyInputPerimeters(starting_level, target_level):
     lookup table for error codes, but this isn't
     """
     # return starting_level > 0 and target_level > starting_level
-    if starting_level < 1:
+    if starting_level < 0:
         print(f"Current level {starting_level} must be at least 1")
         return 1
     if target_level == starting_level:
-        print("No Upgrade Cost: 0")
+        print("No Upgrade; Cost: 0")
         return 2
     if target_level < starting_level:
         print(

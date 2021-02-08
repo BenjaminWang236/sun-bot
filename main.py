@@ -96,6 +96,8 @@ async def upgrade(ctx):
     '[start lvl] [target lvl] | Get the cost in gold needed to upgrade from the starting-level to target-level',
     pass_context=True)
 async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
+    current_level -= 1
+    target_level -= 1
     perimeter_status = verifyInputPerimeters(current_level, target_level)
     if error_code_table[perimeter_status] != 'OK':
         print(f"Error: {error_code_table[perimeter_status]}")
@@ -103,7 +105,7 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     else:
         embed = custom_embed(
             ctx, '__GC Upgrade Cost__',
-            f"Value difference between level {current_level:,} and level {target_level:,}",
+            f"Value difference between level {current_level + 1:,} and level {target_level + 1:,}",
             upgrade_cost_diff(current_level, target_level),
             upgrade_castle_diff(current_level, target_level),
             upgrade_TA_diff(current_level, target_level),
@@ -116,8 +118,9 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     help=
     '[target lvl] | Get the cost in gold to get from level 1 to target-level')
 async def total_cost(ctx, target_level: int = 10000):
+    target_level -= 1
     embed = custom_embed(ctx, '__GC Total Value__',
-                         f"Total value at level {target_level:,}",
+                         f"Total value at level {target_level + 1:,}",
                          upgrade_cost_total(target_level),
                          upgrade_castle_total(target_level),
                          upgrade_TA_total(target_level),
