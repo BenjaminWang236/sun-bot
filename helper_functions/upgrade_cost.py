@@ -110,7 +110,11 @@ def upgrade_cost_diff(starting_level, target_level):
 
 
 def upgrade_castle_total(target_level):
-    return 1250 * target_level * target_level
+    n = symbols("n")
+    sybs = [n]
+    expr = n * 2500 + 543500
+
+    return partSum(target_level, sybs, expr)
 
 
 def upgrade_castle_diff(starting_level, target_level):
@@ -119,7 +123,11 @@ def upgrade_castle_diff(starting_level, target_level):
 
 
 def upgrade_TA_total(target_level):
-    return 500 * target_level * target_level
+    n = symbols("n")
+    sybs = [n]
+    expr = n * 1000 - 44000
+
+    return partSum(target_level, sybs, expr)
 
 
 def upgrade_TA_diff(starting_level, target_level):
