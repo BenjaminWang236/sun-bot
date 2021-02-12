@@ -95,7 +95,9 @@ async def upgrade(ctx):
     help=
     '[start lvl] [target lvl] | Get the cost in gold needed to upgrade from the starting-level to target-level',
     pass_context=True)
-async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
+async def upgrade_cost(ctx, current_level: str, target_level: str):
+    current_level = strToIntStripCommas(current_level)
+    target_level = strToIntStripCommas(target_level)
     current_level -= 1
     target_level -= 1
     perimeter_status = verifyInputPerimeters(current_level, target_level)
@@ -117,7 +119,8 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     name='total',
     help=
     '[target lvl] | Get the cost in gold to get from level 1 to target-level')
-async def total_cost(ctx, target_level: int = 10000):
+async def total_cost(ctx, target_level: str = '1,000'):
+    target_level = strToIntStripCommas(target_level)
     target_level -= 1
     perimeter_status = verifyInputPerimeters(0, target_level)
     if error_code_table[perimeter_status] != 'OK':
