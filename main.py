@@ -119,13 +119,18 @@ async def upgrade_cost(ctx, current_level: int = 1, target_level: int = 10000):
     '[target lvl] | Get the cost in gold to get from level 1 to target-level')
 async def total_cost(ctx, target_level: int = 10000):
     target_level -= 1
-    embed = custom_embed(ctx, '__GC Total Value__',
-                         f"Total value at level {target_level + 1:,}",
-                         upgrade_cost_total(target_level),
-                         upgrade_castle_total(target_level),
-                         upgrade_TA_total(target_level),
-                         upgrade_base_total(target_level))
-    await ctx.send(embed=embed)
+    perimeter_status = verifyInputPerimeters(0, target_level)
+    if error_code_table[perimeter_status] != 'OK':
+        print(f"Error: {error_code_table[perimeter_status]}")
+        await ctx.send(f"{error_code_table[perimeter_status]}")
+    else:
+        embed = custom_embed(ctx, '__GC Total Value__',
+                             f"Total value at level {target_level + 1:,}",
+                             upgrade_cost_total(target_level),
+                             upgrade_castle_total(target_level),
+                             upgrade_TA_total(target_level),
+                             upgrade_base_total(target_level))
+        await ctx.send(embed=embed)
 
 
 @bot.event

@@ -7,13 +7,15 @@ error_code_table = {
     0: 'OK',
     1: 'Starting level must be at least 1',
     2: 'No upgrade cost',
-    3: 'Target level must be greater than Starting level'
+    3: 'Target level must be greater than Starting level',
+    4: 'Starting level cannot exceed 99,999,999',
+    5: 'Target level cannot exceed 100,000,000'
 }
 
 error_msg_to_code = dict((v, k) for k, v in error_code_table.items())
 
 
-def verifyInputPerimeters(starting_level, target_level):
+def verifyInputPerimeters(starting_level: int = 0, target_level: int = 0):
     """
     Return True if perimeters are valid
     Otherwise return False with explanation
@@ -33,6 +35,12 @@ def verifyInputPerimeters(starting_level, target_level):
             f"Target level ({target_level}) not > current level ({starting_level})"
         )
         return 3
+    if starting_level > 99999998:
+        print(f'Starting level cannot exceed 99,999,999')
+        return 4
+    if target_level > 99999999:
+        print(f'Target level canno exceed 100,000,000')
+        return 5
     return 0
 
 
