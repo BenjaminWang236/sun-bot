@@ -16,9 +16,7 @@ error_msg_to_code = dict((v, k) for k, v in error_code_table.items())
 
 
 def strToIntStripCommas(numberString: str):
-    if ',' in numberString:
-        numberString = numberString.replace(',', '')
-    return int(float(numberString))
+    return int(float(numberString.replace(',', '')))
 
 
 def verifyInputPerimeters(starting_level: int = 0, target_level: int = 0):
