@@ -12,7 +12,7 @@ from helper_functions.keep_alive import *
 
 # Loads the .env file that resides on the same level as the script.
 load_dotenv()
-default_prefixes = ['']
+default_prefixes = ['%']
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix=default_prefixes, intents=intents)
 """
@@ -95,7 +95,7 @@ async def upgrade(ctx):
     help=
     '[start lvl] [target lvl] | Get the cost in gold needed to upgrade from the starting-level to target-level',
     pass_context=True)
-async def upgrade_cost(ctx, current_level: str, target_level: str):
+async def upgrade_cost(ctx, current_level: str = '1', target_level: str = '10,000'):
     current_level = strToIntStripCommas(current_level)
     target_level = strToIntStripCommas(target_level)
     current_level -= 1
@@ -119,7 +119,7 @@ async def upgrade_cost(ctx, current_level: str, target_level: str):
     name='total',
     help=
     '[target lvl] | Get the cost in gold to get from level 1 to target-level')
-async def total_cost(ctx, target_level: str = '1,000'):
+async def total_cost(ctx, target_level: str = '10,000'):
     target_level = strToIntStripCommas(target_level)
     target_level -= 1
     perimeter_status = verifyInputPerimeters(0, target_level)
@@ -134,6 +134,48 @@ async def total_cost(ctx, target_level: str = '1,000'):
                              upgrade_TA_total(target_level),
                              upgrade_base_total(target_level))
         await ctx.send(embed=embed)
+
+
+@bot.command(name='builds',
+             help="List out Rocket League's list of useful-builds")
+async def embed_builds(ctx):
+    embed = discord.Embed(
+        title="Rocket League's useful builds",
+        description="A collection of builds courtesey of RL & friends",
+        url='https://discord.gg/jDCe24bKYA',
+        color=0xFF5733,  #,color=Hex code
+        timestamp=datetime.now())
+    embed.set_author(
+        name=ctx.author.display_name,
+        url='https://www.youtube.com/channel/UCFod3BWeZwhg2W1kBi15-pA/featured',
+        icon_url=ctx.author.avatar_url)
+    embed.set_thumbnail(
+        url='https://media1.giphy.com/media/l4KhQo2MESJkc6QbS/giphy.gif')
+    embed.add_field(
+        name=f'Outdated builds',
+        value=
+        '[Sealed Soul (SS) build](https://discord.com/channels/740464229731270738/756984853282553896/757079896659984417)\n'
+        +
+        "[Joe's personal top 10's Build](https://discord.com/channels/740464229731270738/756984853282553896/788924922000703618)",
+        inline=True)
+    embed.add_field(
+        name=f'Timed Auto Battle (TAB) builds',
+        value=
+        '[Ice + Physical Hybrid](https://discord.com/channels/740464229731270738/756984853282553896/798348381910466600)',
+        inline=True)
+    embed.set_footer(
+        text='by Suntoria#4680',
+        icon_url=
+        'https://static.wikia.nocookie.net/thegigaverse/images/6/66/Dark_soulz.jpg/revision/latest?cb=20190719081349'
+    )
+    await ctx.send(embed=embed)
+
+@bot.command(name="convo", help="Testing out Convo-bot idea")
+async def test_convo(ctx):
+    """
+    Main tasks to tackle: User-ID (ctx.author) and Persistent memory (JSON)
+    """
+    await ctx.send("Hello World!")
 
 
 @bot.event
