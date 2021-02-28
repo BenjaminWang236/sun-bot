@@ -21,7 +21,7 @@ din_url = 'https://cdn.discordapp.com/emojis/807443877886951436.png?v=1'  # :wDi
 ice_url = 'https://cdn.discordapp.com/emojis/807441258439507978.png?v=1'  # :zIceTower:
 ta_url = 'https://cdn.discordapp.com/emojis/807446499516612688.png?v=1'  # :wArcher:
 castle_url = 'https://cdn.discordapp.com/emojis/807448829732585532.png?v=1'  # :zCastle:
-crystal_url='https://cdn.discordapp.com/emojis/784252518590578718.png?v=1'  # :zCrystal:
+crystal_url='https://cdn.discordapp.com/emojis/814602831528067133.png?v=1'  # :zCrystal:
 coins_url='https://cdn.discordapp.com/emojis/455521544068661248.png?v=1'    # :Coins:
 coin_url='https://discord.com/assets/11b9d8164d204c7fd48a88a515745c1d.svg'  # :coin:
 # :coin: is a Discord default Emoji, just use the literal ':coin:' in string
@@ -54,7 +54,7 @@ def custom_embed(ctx, title, description, hero, castle, ta, base):
                     inline=False)
     embed.add_field(
         name=f'{bot.get_emoji(807782825524330557)} Castle Piece/Base',
-        value=f'_{bot.get_emoji(784252518590578718)}\t{base:,}\t crystals_',
+        value=f'_{bot.get_emoji(814602831528067133)}\t{base:,}\t crystals_',
         inline=False)
     # embed.set_image(url='https://i.giphy.com/media/13yNFN1TlNCjC0/200.gif')
     embed.set_footer(
