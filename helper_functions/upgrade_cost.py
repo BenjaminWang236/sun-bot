@@ -100,9 +100,9 @@ def upgrade_cost_total(target_level):
     thresholds = [5000, 10000]
 
     cost = 0
-    if target_level < thresholds[0]:
+    if target_level <= thresholds[0]:
         cost += partSum(target_level, sybs, exprs[0])
-    elif target_level < thresholds[1]:
+    elif target_level <= thresholds[1]:
         cost += partSum(thresholds[0] - 1, sybs, exprs[0])
         cost += partSumAny(thresholds[0], target_level, sybs, exprs[1])
     else:
